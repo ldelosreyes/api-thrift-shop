@@ -35,7 +35,7 @@ const validateCategoryId = (req, res, next) => {
   next();
 };
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
   const listings = store.getListings();
   const resources = listings.map(listingMapper);
   res.send(resources);
@@ -51,7 +51,7 @@ router.post(
     // if the request is invalid, we'll end up with one or more image files
     // stored in the uploads folder. We'll need to clean up this folder
     // using a separate process.
-    // auth,
+    auth,
     upload.array("images", config.get("maxImageCount")),
     validateWith(schema),
     validateCategoryId,
